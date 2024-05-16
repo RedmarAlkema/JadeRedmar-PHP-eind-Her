@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class BuyingHistory extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'advertisement_id',
+    ];
+
+    public function advertisement()
+    {
+        return $this->belongsTo(Advertisement::class);
+    }
 }
