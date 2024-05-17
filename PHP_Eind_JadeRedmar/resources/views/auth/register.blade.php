@@ -32,10 +32,10 @@
             <div class="mt-4">
                 <x-label for="role" value="{{ __('Role') }}" />
                 <select id="role" name="role" class="block mt-1 w-full border-gray-300 shadow-sm rounded-md">
+                    <option value="geen">Geen</option>    
                     <option value="particulier">Particulier</option>
                     <option value="zakelijk">Zakelijk</option>
-                    <option value="geen">Geen</option>
-                </select>
+                    </select>
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())

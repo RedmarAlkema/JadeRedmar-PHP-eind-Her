@@ -21,6 +21,8 @@ return new class extends Migration
             $table->double('prijs');
             $table->string('eenheid')->nullable();
             $table->timestamps();
+
+            $table->foreign('verkoper_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
