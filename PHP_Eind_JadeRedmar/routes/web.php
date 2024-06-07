@@ -11,9 +11,13 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites');
+    Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
+    Route::post('/favorite/{id}', [FavoritesController::class, 'favorite'])->name('favorite');
+    Route::post('/unfavorite/{id}', [FavoritesController::class, 'unfavorite'])->name('unfavorite');   
+
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/advertisement', [AdvertisementController::class, 'show'])->name('advertisement');
+    Route::get('/advertisement/{id}', [AdvertisementController::class, 'show'])->name('advertisement');
+
 
 });
