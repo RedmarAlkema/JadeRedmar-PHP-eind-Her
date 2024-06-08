@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Advertisement;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contract;
 
 class HomeController extends Controller
 {
@@ -15,59 +16,55 @@ class HomeController extends Controller
         $query = Advertisement::query();       
 
         if(Auth::user()->role == 'particulier'){
-            
             $advertisements = $user->advertisements;
-        
             return view('dashboard.index', compact('user', 'advertisements'));
         }
         else if(Auth::user()->role == 'admin'){
-            
-            return view('dashboard.index');
+            $contracts = Contract::with('user')->get();
+            return view('contracts.index', compact('contracts'));
         }
-
-        else{
-
-        // Filter by search term
-        if ($request->has('search')) {
-            $searchTerm = $request->input('search');
-            $query->where('titel', 'like', '%' . $searchTerm . '%');
-        }
-
-        // Sort advertisements
-        if ($request->has('sort_by')) {
-            $sortBy = $request->input('sort_by');
-            switch ($sortBy) {
-                case 'price_asc':
-                    $query->orderBy('prijs');
-                    break;
-                case 'price_desc':
-                    $query->orderByDesc('prijs');
-                    break;
-                case 'date_asc':
-                    $query->orderBy('created_at');
-                    break;
-                case 'date_desc':
-                    $query->orderByDesc('created_at');
-                    break;
-                case 'title_asc':
-                    $query->orderBy('titel');
-                    break;
-                case 'title_desc':
-                    $query->orderByDesc('titel');
-                    break;
-                default:
-                    // Do nothing
-                    break;
+        else {
+            // Filter by search term
+            if ($request->has('search')) {
+                $searchTerm = $request->input('search');
+                $query->where('titel', 'like', '%' . $searchTerm . '%');
             }
+
+            // Sort advertisements
+            if ($request->has('sort_by')) {
+                $sortBy = $request->input('sort_by');
+                switch ($sortBy) {
+                    case 'price_asc':
+                        $query->orderBy('prijs');
+                        break;
+                    case 'price_desc':
+                        $query->orderByDesc('prijs');
+                        break;
+                    case 'date_asc':
+                        $query->orderBy('created_at');
+                        break;
+                    case 'date_desc':
+                        $query->orderByDesc('created_at');
+                        break;
+                    case 'title_asc':
+                        $query->orderBy('titel');
+                        break;
+                    case 'title_desc':
+                        $query->orderByDesc('titel');
+                        break;
+                    default:
+                        // Do nothing
+                        break;
+                }
+            }
+
+            // Fetch advertisements with pagination
+            $advertisements = $query->paginate(10);
+
+            // Fetch favorite advertisement IDs for the current user
+            $favoriteAdvertisementIds = $user->favorites()->pluck('advertisement_id')->toArray();
+
+            return view('home', compact('advertisements', 'favoriteAdvertisementIds'));
         }
-
-        // Fetch advertisements with pagination
-        $advertisements = $query->paginate(10);
-
-        // Fetch favorite advertisement IDs for the current user
-        $favoriteAdvertisementIds = $user->favorites()->pluck('advertisement_id')->toArray();
-
-        return view('home', compact('advertisements', 'favoriteAdvertisementIds'));}
     }
-
 }

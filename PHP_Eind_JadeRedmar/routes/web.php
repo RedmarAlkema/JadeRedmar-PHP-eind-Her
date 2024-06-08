@@ -11,6 +11,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\UserAgendaController;
+use App\Http\Controllers\AdminContractController;
 
 Route::middleware([
     'auth:sanctum',
@@ -48,6 +49,15 @@ Route::middleware([
     Route::get('/agenda', [AgendaController::class, 'index'])->name('dashboard.agenda');
     Route::get('/user-agenda', [UserAgendaController::class, 'index'])->name('user-agenda');
     
+    
+    Route::get('/contracts', [AdminContractController::class, 'index'])->name('contracts.index');
+    Route::patch('/contracts/{id}/approve', [AdminContractController::class, 'approve'])->name('contracts.approve');
+    Route::patch('/contracts/{id}/reject', [AdminContractController::class, 'reject'])->name('contracts.reject');
+    Route::get('/contracts/download/{id}', [AdminContractController::class, 'download'])->name('contracts.download');
+
+
     Route::post('/contracts/upload', [ContractController::class, 'upload'])->name('contracts.upload');
 
+
 });
+

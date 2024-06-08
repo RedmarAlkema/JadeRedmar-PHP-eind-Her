@@ -8,8 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Contract extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'filename', // Assuming you'll store the filename in the database
-        'status',   // Status of the contract (e.g., pending, accepted, rejected)
+        'file_path', 
+        'is_accepted',
+        'user_id',
+        'extension'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

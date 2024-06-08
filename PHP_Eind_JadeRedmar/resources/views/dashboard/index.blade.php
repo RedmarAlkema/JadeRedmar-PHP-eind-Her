@@ -6,6 +6,14 @@
 
     <a href="{{ route('advertisements.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-6 inline-block">Create Advertisement</a>
 
+    <form action="{{ route('contracts.upload') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="mb-4">
+            <label for="contract" class="block text-gray-700 font-semibold mb-2">Upload Contract (PDF)</label>
+            <input type="file" name="contract" id="contract" class="border border-gray-300 rounded-lg px-3 py-2 w-full">
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Upload</button>
+    </form>
     <form action="{{ route('dashboard.update') }}" method="POST" class="mb-6">
         @csrf
         @method('PUT')
@@ -46,7 +54,6 @@
             <input type="text" id="custom_url" name="custom_url" value="{{ old('custom_url', $user->custom_url) }}" class="w-full px-3 py-2 border rounded">
         </div>
         
-
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save Customizations</button>
     </form>
 
