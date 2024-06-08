@@ -1,7 +1,7 @@
 <!-- resources/views/home.blade.php -->
 
 <x-app-layout>
-    <div class="container mx-auto py-8 px-10">
+    <div class="container mx-auto py-8 px-10 bg-gray-300">
         <h1 class="text-3xl font-semibold mb-4 text-center">All Advertisements</h1>
         
         <!-- Search form -->
@@ -38,7 +38,7 @@
                         <a href="{{ route('advertisement', ['id' => $advertisement->id]) }}">
                             <h2 class="text-lg font-semibold mb-2">{{ $advertisement->titel }}</h2>
                             <p class="text-gray-600">{{ $advertisement->beschrijving }}</p>
-                            <p class="text-gray-700 mt-2">Price: €{{ $advertisement->prijs }}</p>
+                            <p class="text-gray-700 mt-2">Price: €{{ $advertisement->prijs }}  {{$advertisement->eenheid}}</p>
                             <p class="text-gray-500 absolute bottom-0 right-0 p-2">{{ $advertisement->created_at->diffForHumans() }}</p>
                             </a>
                         </div>

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,8 +18,13 @@ class Advertisement extends Model
         'eenheid',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'verkoper_id');
+    }
+
     public function reviews()
     {
-        return $this->belongsToMany(Review::class, 'advertisement_reviews');
+        return $this->hasManyThrough(Review::class, AdvertisementReview::class, 'advertisement_id', 'id', 'id', 'review_id');
     }
 }

@@ -5,24 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model
+class Purchase extends Model
 {
     use HasFactory;
-    
-    protected $fillable = [
-        'content',
-        'rating',
-        'user_id',
-    ];
-    
+
+    protected $fillable = ['user_id', 'advertisement_id', 'quantity'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function advertisementReviews()
+    public function advertisement()
     {
-        return $this->hasMany(AdvertisementReview::class);
+        return $this->belongsTo(Advertisement::class);
     }
 }

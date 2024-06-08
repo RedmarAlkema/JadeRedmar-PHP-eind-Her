@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SellerReview extends Model
+class Cart extends Model
 {
     use HasFactory;
 
-    protected $table = 'seller_reviews';
+    protected $fillable = ['user_id'];
 
-    public function review()
+    public function items()
     {
-        return $this->belongsTo(Review::class);
+        return $this->hasMany(CartItem::class);
     }
 }
