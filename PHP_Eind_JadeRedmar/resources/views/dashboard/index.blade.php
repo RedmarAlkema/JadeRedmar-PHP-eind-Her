@@ -16,6 +16,7 @@
                 <option value="background_color" @if($user->background_color) selected @endif>Background Color</option>
                 <option value="intro_text" @if($user->intro_text) selected @endif>Introduction Text</option>
                 <option value="company_description" @if($user->company_description) selected @endif>Company Description</option>
+                <option value="profile_url" @if($user->profile_url) selected @endif>Profile picture URL</option>
                 <option value="custom_url" @if($user->custom_url) selected @endif>Custom URL</option>
             </select>
         </div>
@@ -36,9 +37,15 @@
         </div>
 
         <div id="custom_url_input" class="mb-4 @if(!$user->custom_url) hidden @endif">
+            <label for="profile_url" class="block text-gray-700">Custom URL Name:</label>
+            <input type="text" id="profile_url" name="profile_url" value="{{ old('profile_url', $user->profile_url) }}" class="w-full px-3 py-2 border rounded">
+        </div>
+
+        <div id="custom_url_input" class="mb-4 @if(!$user->custom_url) hidden @endif">
             <label for="custom_url" class="block text-gray-700">Custom URL:</label>
             <input type="text" id="custom_url" name="custom_url" value="{{ old('custom_url', $user->custom_url) }}" class="w-full px-3 py-2 border rounded">
         </div>
+        
 
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save Customizations</button>
     </form>

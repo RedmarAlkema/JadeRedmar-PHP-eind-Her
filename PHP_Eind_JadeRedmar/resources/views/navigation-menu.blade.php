@@ -95,7 +95,7 @@
                         <x-slot name="content">
                             <!-- Account Management -->
                            
-                            <x-dropdown-link href="{{ route('profile.show') }}">
+                            <x-dropdown-link href="{{ route('user-agenda') }}">
                                 {{ __('Agenda') }}
                             </x-dropdown-link>
 

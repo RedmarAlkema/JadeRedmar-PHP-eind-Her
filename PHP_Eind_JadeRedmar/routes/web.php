@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\AdvertisementController;
@@ -8,6 +9,8 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\UserAgendaController;
 
 Route::middleware([
     'auth:sanctum',
@@ -41,5 +44,10 @@ Route::middleware([
 
     Route::get('/seller/{id}', [SellerController::class, 'show'])->name('seller.show');
     Route::post('/seller/review', [ReviewController::class, 'postSellerReview'])->name('seller.review');
+
+    Route::get('/agenda', [AgendaController::class, 'index'])->name('dashboard.agenda');
+    Route::get('/user-agenda', [UserAgendaController::class, 'index'])->name('user-agenda');
+    
+    Route::post('/contracts/upload', [ContractController::class, 'upload'])->name('contracts.upload');
 
 });

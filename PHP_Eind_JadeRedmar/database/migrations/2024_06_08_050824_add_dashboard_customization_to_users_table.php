@@ -13,6 +13,7 @@ return new class extends Migration
             $table->text('intro_text')->nullable();
             $table->text('company_description')->nullable();
             $table->string('custom_url')->nullable();
+            $table->string('profile_url')->nullable();
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->dropColumn('intro_text');
             $table->dropColumn('company_description');
             $table->dropColumn('custom_url');
+            $table->dropColumn('profile_url');
         });
     }
 };

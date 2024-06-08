@@ -20,17 +20,52 @@ class AdvertisementController extends Controller
     }
 
     public function store(Request $request)
-    {
-
-        
-        
-
+    {     
         $request->validate([
+            'csv_file' => 'file|mimes:csv,txt',
             'title' => 'required',
             'description' => 'required',
             'url' => 'nullable|url',
-            'components' => 'nullable|json',
+            'price' => 'required|int',
+            'type' => 'required'
+        ], [
+            'title.required' => 'The title field is required.',
+            'description.required' => 'The description field is required.',
+            'url.url' => 'The URL format is invalid.',
+            'price.required' => 'The price field is required.',
+            'price.int' => 'The price must be an integer.',
+            'csv_file.mimes' => 'The uploaded file must be a CSV file.'
         ]);
+
+        // Handle CSV file upload
+        if ($request->hasFile('csv_file')) {
+            $file = $request->file('csv_file');
+    
+            // Store the file temporarily
+            $filePath = $file->storeAs('csv', 'temp.csv');
+    
+            // Read the CSV file
+            $csv = Reader::createFromPath(storage_path('app/' . $filePath), 'r');
+            $csv->setHeaderOffset(0); // Assumes the first row contains the column headers
+    
+            foreach ($csv as $row) {
+                // Create advertisement for each row in the CSV
+                Advertisement::create([
+                    'verkoper_id' => Auth::id(),
+                    'verkoper_naam' => Auth::user()->name,
+                    'titel' => $row['title'],
+                    'beschrijving' => $row['description'],
+                    'url' => $row['url'] ?? null,
+                    'eenheid' => $row['eenheid'],
+                    'prijs' => $row['price'],                    
+                    'type' =>  $row['type'],
+                ]);
+            }
+    
+            // Delete the temporary file
+            Storage::delete($filePath);
+        }  
+                
 
         $user = Auth::user();
         $query = Advertisement::query();
@@ -42,11 +77,15 @@ class AdvertisementController extends Controller
         $advertisement->beschrijving = $request->description;
         $advertisement->url = $request->url;
         $advertisement->components = $request->components;
+        $advertisement->eenheid = $request->eenheid;
         $advertisement->prijs = $request->price;
+        $advertisement->type = $request->type;
         $advertisement->save();
 
         $advertisements = $user->advertisements;
         
         return view('dashboard.index', compact('user', 'advertisements'));
     }
+
+    
 }

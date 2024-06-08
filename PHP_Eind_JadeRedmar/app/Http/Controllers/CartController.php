@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Advertisement;
 use App\Models\Purchase;
+use Carbon\Carbon;
 
 class CartController extends Controller
 {
@@ -62,22 +63,27 @@ class CartController extends Controller
     {
         $user = auth()->user();
         $cart = Cart::where('user_id', $user->id)->with('items.advertisement')->first();
-
+    
         if (!$cart || $cart->items->isEmpty()) {
             return redirect()->back()->with('error', 'Your cart is empty.');
         }
-
+    
         foreach ($cart->items as $item) {
             Purchase::create([
                 'user_id' => $user->id,
                 'advertisement_id' => $item->advertisement_id,
                 'quantity' => $item->quantity,
             ]);
+    
+            // Update advertisement start and end times
+            $item->advertisement->start_time = Carbon::now()->addDays(2);
+            $item->advertisement->end_time = Carbon::now()->addDays(7);
+            $item->advertisement->save();
         }
-
+    
         // Clear the cart
         $cart->items()->delete();
-
+    
         return redirect()->route('history')->with('success', 'Purchase completed successfully.');
     }
 }

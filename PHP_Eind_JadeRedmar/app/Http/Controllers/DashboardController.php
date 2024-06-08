@@ -28,6 +28,7 @@ class DashboardController extends Controller
         $user->background_color = $request->background_color;
         $user->intro_text = $request->intro_text;
         $user->custom_url = $request->custom_url;
+        $user->profile_url = $request->profile_url;
         $user->company_description = $request->company_description;
         $user->save();
 

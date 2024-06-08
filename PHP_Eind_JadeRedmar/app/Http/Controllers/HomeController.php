@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $query = Advertisement::query();
+        $query = Advertisement::query();       
 
         if(Auth::user()->role == 'particulier'){
             
@@ -20,6 +20,11 @@ class HomeController extends Controller
         
             return view('dashboard.index', compact('user', 'advertisements'));
         }
+        else if(Auth::user()->role == 'admin'){
+            
+            return view('dashboard.index');
+        }
+
         else{
 
         // Filter by search term

@@ -31,6 +31,7 @@ class User extends Authenticatable
         'background_color',
         'intro_text',
         'custom_url',
+        'profile_url',
         'company_description', // Remove show_company_description
     ];
 
