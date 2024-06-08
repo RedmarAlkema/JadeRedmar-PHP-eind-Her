@@ -28,7 +28,12 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'background_color',
+        'intro_text',
+        'custom_url',
+        'company_description', // Remove show_company_description
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.

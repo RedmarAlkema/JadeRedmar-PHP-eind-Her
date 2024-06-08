@@ -14,6 +14,14 @@ class HomeController extends Controller
         $user = Auth::user();
         $query = Advertisement::query();
 
+        if(Auth::user()->role == 'particulier'){
+            
+            $advertisements = $user->advertisements;
+        
+            return view('dashboard.index', compact('user', 'advertisements'));
+        }
+        else{
+
         // Filter by search term
         if ($request->has('search')) {
             $searchTerm = $request->input('search');
@@ -54,7 +62,7 @@ class HomeController extends Controller
         // Fetch favorite advertisement IDs for the current user
         $favoriteAdvertisementIds = $user->favorites()->pluck('advertisement_id')->toArray();
 
-        return view('home', compact('advertisements', 'favoriteAdvertisementIds'));
+        return view('home', compact('advertisements', 'favoriteAdvertisementIds'));}
     }
 
 }

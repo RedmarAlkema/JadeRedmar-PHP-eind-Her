@@ -17,8 +17,10 @@ return new class extends Migration
             $table->unsignedBigInteger('verkoper_id');
             $table->string('titel');
             $table->text('beschrijving');
-            $table->string('soort');
+            $table->string('soort')->default('');
             $table->double('prijs');
+            $table->string('url')->nullable();
+            $table->string('components')->nullable();
             $table->string('eenheid')->nullable();
             $table->timestamps();
 

@@ -16,6 +16,8 @@ class Advertisement extends Model
         'soort',
         'prijs',
         'eenheid',
+        'url',
+        'components'
     ];
 
     public function user()

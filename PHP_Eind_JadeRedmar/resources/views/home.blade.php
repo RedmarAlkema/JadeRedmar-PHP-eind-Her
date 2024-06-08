@@ -1,7 +1,7 @@
 <!-- resources/views/home.blade.php -->
 
 <x-app-layout>
-    <div class="container mx-auto py-8 px-10 bg-gray-300">
+    <div class="container mx-auto py-8 px-10 bg-gray-200">
         <h1 class="text-3xl font-semibold mb-4 text-center">All Advertisements</h1>
         
         <!-- Search form -->

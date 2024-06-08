@@ -7,6 +7,7 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\DashboardController;
 
 Route::middleware([
     'auth:sanctum',
@@ -14,13 +15,19 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::put('/dashboard', [DashboardController::class, 'update'])->name('dashboard.update');
+
     Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
     Route::post('/favorite/{id}', [FavoritesController::class, 'favorite'])->name('favorite');
     Route::post('/unfavorite/{id}', [FavoritesController::class, 'unfavorite'])->name('unfavorite');   
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+
     Route::get('/advertisement/{id}', [AdvertisementController::class, 'show'])->name('advertisement');
+    Route::get('/advertisements/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
+    Route::post('/advertisements', [AdvertisementController::class, 'store'])->name('advertisements.store');
 
     Route::get('/review/seller', [ReviewController::class, 'postSellerReview'])->name('review.seller');
     Route::post('/review/advertisement', [ReviewController::class, 'postAdvertisementReview'])->name('review.advertisement');

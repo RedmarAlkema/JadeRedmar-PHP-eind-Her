@@ -1,12 +1,40 @@
 <!-- resources/views/sellers/show.blade.php -->
 
 <x-app-layout>
-    <div class="container mx-auto py-8 px-4">
+<div class="container mx-auto py-8 px-4" style="background-color: {{ $seller->background_color ?? '#fff' }}">
         <!-- Seller information -->
-        <div class="mb-8">
+        <div class="mb-8 p-6 rounded-lg shadow-md bg-white">
             <h1 class="text-3xl font-bold text-gray-800">{{ $seller->name }}</h1>
             <p class="text-gray-700">{{ $seller->email }}</p>
         </div>
+
+        @if ($seller->intro_text || $seller->company_description || $seller->custom_url)
+            <div class="mb-8">
+                <div class="border rounded-lg shadow-md bg-white p-6 mb-6">
+                    @if ($seller->intro_text)
+                        <h2 class="text-2xl font-semibold text-gray-800">Introduction</h2>
+                        <p class="text-gray-700">{{ $seller->intro_text }}</p>
+                    @endif
+                </div>
+
+                <div class="border rounded-lg shadow-md bg-white p-6 mb-6">
+                    @if ($seller->company_description)
+                        <h2 class="text-2xl font-semibold text-gray-800">Company Description</h2>
+                        <p class="text-gray-700">{{ $seller->company_description }}</p>
+                    @endif
+                </div>
+
+                <div class="border rounded-lg shadow-md bg-white p-6 mb-6">
+                    @if ($seller->custom_url)
+                        <h2 class="text-2xl font-semibold text-gray-800">Custom URL</h2>
+                        <div class="text-blue-500">
+                            <img src="{{ $seller->custom_url }}" alt="">
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+
 
         <div class="mb-12">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">Advertisements by {{ $seller->name }}</h2>
