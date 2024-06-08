@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<div class="mx-auto px-4 h-screen overflow-y-auto">
+<div class="mx-auto px-4 h-screen overflow-y-auto max-w-4xl">
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">Dashboard</h1>
 
     <a href="{{ route('advertisements.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-6 inline-block">Create Advertisement</a>
 
-    <form action="{{ route('contracts.upload') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('contracts.upload') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
         @csrf
         <div class="mb-4">
             <label for="contract" class="block text-gray-700 font-semibold mb-2">Upload Contract (PDF)</label>
@@ -14,7 +14,18 @@
         </div>
         <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Upload</button>
     </form>
-    <form action="{{ route('dashboard.update') }}" method="POST" class="mb-6">
+
+    @if($latestContract)
+        <div class="my-8 p-6 bg-gray-200 rounded shadow-md">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Latest Contract</h2>
+            <p><strong>Date:</strong> {{ $latestContract->created_at->format('d-m-Y') }}</p>
+            <p><strong>Status:</strong> {{ $latestContract->is_accepted ? 'Approved' : 'Not Approved' }}</p>
+        </div>
+    @else
+        <p class="mt-6 text-gray-700">No contracts uploaded yet.</p>
+    @endif
+
+    <form action="{{ route('dashboard.update') }}" method="POST" class="bg-white p-6 rounded shadow-md mb-6">
         @csrf
         @method('PUT')
 
@@ -44,8 +55,8 @@
             <textarea id="company_description" name="company_description" rows="4" class="w-full px-3 py-2 border rounded">{{ old('company_description', $user->company_description) }}</textarea>
         </div>
 
-        <div id="custom_url_input" class="mb-4 @if(!$user->custom_url) hidden @endif">
-            <label for="profile_url" class="block text-gray-700">Custom URL Name:</label>
+        <div id="profile_url_input" class="mb-4 @if(!$user->profile_url) hidden @endif">
+            <label for="profile_url" class="block text-gray-700">Profile picture URL:</label>
             <input type="text" id="profile_url" name="profile_url" value="{{ old('profile_url', $user->profile_url) }}" class="w-full px-3 py-2 border rounded">
         </div>
 
@@ -58,24 +69,33 @@
     </form>
 
     @if ($user->intro_text)
-        <div class="mb-6 p-4" style="background-color: {{ $user->background_color ?? '#fff' }}">
+        <div class="mb-6 p-4 bg-white rounded shadow-md" style="background-color: {{ $user->background_color ?? '#fff' }}">
             <h2 class="text-xl font-semibold text-gray-800">Introduction</h2>
             <p>{{ $user->intro_text }}</p>
         </div>
     @endif
 
     @if ($user->company_description)
-        <div class="mb-6 p-4" style="background-color: {{ $user->background_color ?? '#fff' }}">
+        <div class="mb-6 p-4 bg-white rounded shadow-md" style="background-color: {{ $user->background_color ?? '#fff' }}">
             <h2 class="text-xl font-semibold text-gray-800">Company Description</h2>
             <p>{{ $user->company_description }}</p>
         </div>
     @endif
 
     @if ($user->custom_url)
-        <div class="mb-6 p-4" style="background-color: {{ $user->background_color ?? '#fff' }}">
+        <div class="mb-6 p-4 bg-white rounded shadow-md" style="background-color: {{ $user->background_color ?? '#fff' }}">
             <h2 class="text-xl font-semibold text-gray-800">Custom URL</h2>
             <div class="text-blue-500">
                 <img src="{{ $user->custom_url }}" alt="">
+            </div>
+        </div>
+    @endif
+
+    @if ($user->profile_url)
+        <div class="mb-6 p-4 bg-white rounded shadow-md" style="background-color: {{ $user->background_color ?? '#fff' }}">
+            <h2 class="text-xl font-semibold text-gray-800">Profile URL</h2>
+            <div class="text-blue-500">
+                <img src="{{ $user->profile_url }}" alt="">
             </div>
         </div>
     @endif
@@ -90,6 +110,7 @@
             'intro_text': document.getElementById('intro_text_input'),
             'company_description': document.getElementById('company_description_input'),
             'custom_url': document.getElementById('custom_url_input'),
+            'profile_url': document.getElementById('profile_url_input'),
         };
 
         componentsSelect.addEventListener('change', function() {
@@ -104,7 +125,6 @@
             });
         });
 
-        // Trigger change event to show the currently selected components
         const event = new Event('change');
         componentsSelect.dispatchEvent(event);
     });

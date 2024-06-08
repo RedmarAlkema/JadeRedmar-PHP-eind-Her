@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Advertisement;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AdvertisementController extends Controller
 {
     public function show($id)
     {
+        $url = url()->current();
+        $qrCode = QrCode::generate($url);
         $advertisement = Advertisement::with('user')->findOrFail($id);
-        return view('advertisement', compact('advertisement'));
+
+        return view('advertisement', compact('advertisement','qrCode'));
     }
 
     public function create()

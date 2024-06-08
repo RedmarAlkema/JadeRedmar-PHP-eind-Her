@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminContractController extends Controller
 {
@@ -33,13 +34,14 @@ class AdminContractController extends Controller
 
     public function download($id)
     {
-        $file = Contract::find($id);
+        $contract = Contract::find($id);
     
-        if ($file) {
-            $path = storage_path('app/public/files/' . $file->file_path);
-    
-            if (file_exists($path)) {
-                return response()->download($path);
+        if ($contract) {
+            // Assuming the file_path is stored correctly
+            $filePath = 'public/' . $contract->file_path;
+            
+            if (Storage::exists($filePath)) {
+                return Storage::download($filePath);
             } else {
                 return redirect()->route('contracts.index')->with('error', 'File does not exist.');
             }
