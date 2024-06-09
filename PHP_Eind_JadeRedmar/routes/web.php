@@ -43,8 +43,10 @@ Route::middleware([
     Route::post('/cart/checkout', [CartController::class, 'purchaseItems'])->name('cart.checkout');
     Route::get('/history', [CartController::class, 'purchaseHistory'])->name('history');
 
-    Route::get('/seller/{id}', [SellerController::class, 'show'])->name('seller.show');
-    Route::post('/seller/review', [ReviewController::class, 'postSellerReview'])->name('seller.review');
+    
+    Route::get('/seller/{id}', [SellerController::class, 'show'])->name('seller.show.id');
+    Route::get('/seller/custom/{custom_url}', [SellerController::class, 'showByCustomUrl'])->name('seller.show.custom');
+    Route::post('/seller/review', [SellerController::class, 'storeReview'])->name('seller.review');
 
     Route::get('/agenda', [AgendaController::class, 'index'])->name('dashboard.agenda');
     Route::get('/user-agenda', [UserAgendaController::class, 'index'])->name('user-agenda');

@@ -3,15 +3,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contract;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $advertisements = $user->advertisements;
+        $latestContract = Contract::where('user_id', $user->id)->latest()->first(); // Fetch the latest contract for the user
 
-        return view('dashboard.index', compact('user', 'advertisements'));
+        return view('dashboard.index', compact('user', 'latestContract'));
     }
 
     public function update(Request $request)
@@ -21,7 +22,7 @@ class DashboardController extends Controller
         $request->validate([
             'background_color' => 'nullable|string|max:7',
             'intro_text' => 'nullable|string',
-            'custom_url' => 'nullable|url',
+            'custom_url' => 'nullable|string', // Update validation rule to 'string'
             'company_description' => 'nullable|string',
         ]);
 
@@ -34,4 +35,5 @@ class DashboardController extends Controller
 
         return redirect()->route('dashboard.index')->with('success', 'Dashboard customization updated successfully.');
     }
+
 }

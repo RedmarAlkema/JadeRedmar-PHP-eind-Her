@@ -64,6 +64,7 @@
             <label for="custom_url" class="block text-gray-700">Custom URL:</label>
             <input type="text" id="custom_url" name="custom_url" value="{{ old('custom_url', $user->custom_url) }}" class="w-full px-3 py-2 border rounded">
         </div>
+
         
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save Customizations</button>
     </form>
@@ -86,7 +87,7 @@
         <div class="mb-6 p-4 bg-white rounded shadow-md" style="background-color: {{ $user->background_color ?? '#fff' }}">
             <h2 class="text-xl font-semibold text-gray-800">Custom URL</h2>
             <div class="text-blue-500">
-                <img src="{{ $user->custom_url }}" alt="">
+            <p> {{ $user->custom_url }}</p>
             </div>
         </div>
     @endif

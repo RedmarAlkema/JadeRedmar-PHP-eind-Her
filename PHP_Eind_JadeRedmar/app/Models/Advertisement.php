@@ -20,8 +20,10 @@ class Advertisement extends Model
         'components',
         'start_time',
         'end_time',
-        'type'
+        'type',
+        'wear_and_tear',
     ];
+    
 
     public function user()
     {

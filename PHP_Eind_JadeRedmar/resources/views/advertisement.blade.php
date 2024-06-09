@@ -8,13 +8,17 @@
 
         <div class="flex mb-8">
             <div class="w-2/3 pr-8">
-            <div class="photo-container mb-8 rounded-lg shadow-lg overflow-hidden bg-gray-300 flex items-center justify-center">
-                    <span class="text-black text-2xl">foto</span>
+                <div class="mb-8 overflow-hidden flex items-center justify-center">
+                    <img src="{{ asset('storage/frame.png') }}" alt="Frame Image">
                 </div>
 
                 <div class="mb-8">
                     <p class="text-gray-700 text-lg mb-4">{{ $advertisement->beschrijving }}</p>
                     <p class="text-gray-800 font-semibold text-xl mb-2">Price: €{{ $advertisement->prijs }}</p>
+                    @if($advertisement->wear_and_tear)
+                        <p class="text-gray-800 font-semibold">Wear and Tear (per time unit): €{{ $advertisement->wear_and_tear }}</p>
+                    @endif
+
                     <p class="text-gray-500">Posted: {{ $advertisement->created_at->diffForHumans() }}</p>
                 </div>
 
@@ -84,8 +88,13 @@
                         <p class="text-gray-700">Poster details not available</p>
                     @endif
                     <div class="mt-4">
-                        <a href="{{ route('seller.show', $advertisement->verkoper_id) }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">View Seller's Page</a>
+                        @if ($advertisement->user->custom_url)
+                            <a href="{{ route('seller.show.custom', ['custom_url' => $advertisement->user->custom_url]) }}" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">View Seller</a>
+                        @else
+                            <a href="{{ route('seller.show.id', ['id' => $advertisement->user->id]) }}" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">View Seller</a>
+                        @endif
                     </div>
+
                 </div>
 
                 <div>

@@ -1,7 +1,7 @@
 <!-- resources/views/sellers/show.blade.php -->
 
 <x-app-layout>
-<div class="container mx-auto py-8 px-4" style="background-color: {{ $seller->background_color ?? '#fff' }}">
+  <div class="container mx-auto py-8 px-4" style="background-color: {{ $seller->background_color ?? '#fff' }}">
         <!-- Seller information -->
         <div class="mb-8 p-6 rounded-lg shadow-md bg-white">
             <h1 class="text-3xl font-bold text-gray-800">{{ $seller->name }}</h1>
@@ -10,41 +10,31 @@
 
         @if ($seller->intro_text || $seller->company_description || $seller->custom_url)
             <div class="mb-8">
-                <div class="border rounded-lg shadow-md bg-white p-6 mb-6">
-                    @if ($seller->intro_text)
+                @if ($seller->intro_text)
+                    <div class="border rounded-lg shadow-md bg-white p-6 mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Introduction</h2>
                         <p class="text-gray-700">{{ $seller->intro_text }}</p>
-                    @endif
-                </div>
+                    </div>
+                @endif
 
-                <div class="border rounded-lg shadow-md bg-white p-6 mb-6">
-                    @if ($seller->company_description)
+                @if ($seller->company_description)
+                    <div class="border rounded-lg shadow-md bg-white p-6 mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Company Description</h2>
                         <p class="text-gray-700">{{ $seller->company_description }}</p>
-                    @endif
-                </div>
-
-                <div class="border rounded-lg shadow-md bg-white p-6 mb-6">
-                    @if ($seller->custom_url)
-                        <h2 class="text-2xl font-semibold text-gray-800">Custom URL</h2>
-                        <div class="text-blue-500">
-                            <img src="{{ $seller->custom_url }}" alt="">
-                        </div>
-                    @endif
-                </div>
+                    </div>
+                @endif
             </div>
         @endif
-
 
         <div class="mb-12">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">Advertisements by {{ $seller->name }}</h2>
             <!-- Advertisement search form -->
-            <form action="{{ route('seller.show', $seller->id) }}" method="GET" class="mb-4">
+            <form action="{{ route('seller.show.id', $seller->id) }}" method="GET" class="mb-4">
                 <input type="text" name="search" placeholder="Search advertisements" class="border border-gray-300 rounded-lg px-3 py-2 mr-2">
                 <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Search</button>
             </form>
             <!-- Advertisement filter form -->
-            <form action="{{ route('seller.show', $seller->id) }}" method="GET" class="mb-4">
+            <form action="{{ route('seller.show.id', $seller->id) }}" method="GET" class="mb-4">
                 <label for="category" class="block text-gray-700 mb-2">Filter by Category</label>
                 <select name="category" id="category" class="border border-gray-300 rounded-lg px-3 py-2 pr-8 mr-2">
                     <option value="">All Categories</option>
@@ -107,7 +97,7 @@
                             @for ($i = 1; $i <= 5; $i++)
                                 @if ($i <= $sellerReview->review->rating)
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="gold" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 00-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                                     </svg>
                                 @else
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="gold" class="w-6 h-6 mr-1">
@@ -127,10 +117,10 @@
                 </div>
             @endforeach
 
-        <!-- Pagination links -->
-        {{ $sellerReviews->links() }}
+            <!-- Pagination links -->
+            {{ $sellerReviews->links() }}
+        </div>
     </div>
-</div>
 
     <style>
         .star {
@@ -160,3 +150,4 @@
         });
     </script>
 </x-app-layout>
+

@@ -34,6 +34,11 @@
                     <option value="verkoop">Verkoop</option>
                 </select>
             </div>            
+            <div class="mb-4">
+                <label for="wear_and_tear" class="block text-gray-700 font-semibold mb-2">Wear and Tear (per tijdseenheid)</label>
+                <input type="text" name="wear_and_tear" id="wear_and_tear" class="border border-gray-300 rounded-lg px-3 py-2 w-full">
+            </div>
+
             <div>
                 <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Create Advertisement</button>
             </div>

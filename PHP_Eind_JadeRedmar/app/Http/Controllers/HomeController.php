@@ -18,10 +18,11 @@ class HomeController extends Controller
         if(Auth::user()->role == 'particulier'){
             $advertisements = $user->advertisements;
 
-            // Get the latest contract for the user
-            $latestContract = Contract::where('user_id', $user->id)->latest()->first();
+           
+        $user = Auth::user();
+        $latestContract = Contract::where('user_id', $user->id)->latest()->first(); // Fetch the latest contract for the user
 
-            return view('dashboard.index', compact('user', 'advertisements', 'latestContract'));
+        return view('dashboard.index', compact('user', 'latestContract'));
         }
         else if(Auth::user()->role == 'admin'){
             $contracts = Contract::with('user')->get();

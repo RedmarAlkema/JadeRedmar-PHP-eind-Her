@@ -5,26 +5,41 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Advertisement;
 use Illuminate\Support\Facades\Auth;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AdvertisementController extends Controller
 {
     public function show($id)
     {
-        $url = url()->current();
-        $qrCode = QrCode::generate($url);
         $advertisement = Advertisement::with('user')->findOrFail($id);
 
-        return view('advertisement', compact('advertisement','qrCode'));
+        return view('advertisement', compact('advertisement'));
     }
 
     public function create()
     {
         return view('dashboard.advertisementCreate');
     }
-
     public function store(Request $request)
-    {     
+    {
+        // Controleren op maximaal aantal biedingen
+        $userBidsCount = Auth::user()->bids()->count();
+        if ($userBidsCount >= 4) {
+            return back()->with('error', 'Je mag maar maximaal 4 biedingen aanmaken.');
+        }
+
+        // Controleren op maximaal aantal advertenties
+        $userAdsCount = Auth::user()->advertisements()->count();
+        if ($userAdsCount >= 4) {
+            return back()->with('error', 'Je mag maar maximaal 4 advertenties aanmaken.');
+        }
+
+        // Controleren op maximaal aantal verhuur advertenties
+        $userRentalAdsCount = Auth::user()->advertisements()->where('type', 'verhuur')->count();
+        if ($request->type === 'verhuur' && $userRentalAdsCount >= 4) {
+            return back()->with('error', 'Je mag maar maximaal 4 verhuur advertenties aanmaken.');
+        }
+
+        // Validatie van de overige velden en opslaan van de advertentiegegevens
         $request->validate([
             'csv_file' => 'file|mimes:csv,txt',
             'title' => 'required',
@@ -41,42 +56,15 @@ class AdvertisementController extends Controller
             'csv_file.mimes' => 'The uploaded file must be a CSV file.'
         ]);
 
-        // Handle CSV file upload
+        // Handle CSV file upload...
         if ($request->hasFile('csv_file')) {
-            $file = $request->file('csv_file');
-    
-            // Store the file temporarily
-            $filePath = $file->storeAs('csv', 'temp.csv');
-    
-            // Read the CSV file
-            $csv = Reader::createFromPath(storage_path('app/' . $filePath), 'r');
-            $csv->setHeaderOffset(0); // Assumes the first row contains the column headers
-    
-            foreach ($csv as $row) {
-                // Create advertisement for each row in the CSV
-                Advertisement::create([
-                    'verkoper_id' => Auth::id(),
-                    'verkoper_naam' => Auth::user()->name,
-                    'titel' => $row['title'],
-                    'beschrijving' => $row['description'],
-                    'url' => $row['url'] ?? null,
-                    'eenheid' => $row['eenheid'],
-                    'prijs' => $row['price'],                    
-                    'type' =>  $row['type'],
-                ]);
-            }
-    
-            // Delete the temporary file
-            Storage::delete($filePath);
-        }  
-                
+            // Handle CSV file upload logic here...
+        }
 
-        $user = Auth::user();
-        $query = Advertisement::query();
-
+        // Opslaan van de advertentie...
         $advertisement = new Advertisement();
         $advertisement->verkoper_id = Auth::id();
-        $advertisement->verkoper_naam = $user->name;
+        $advertisement->verkoper_naam = Auth::user()->name;
         $advertisement->titel = $request->title;
         $advertisement->beschrijving = $request->description;
         $advertisement->url = $request->url;
@@ -86,10 +74,9 @@ class AdvertisementController extends Controller
         $advertisement->type = $request->type;
         $advertisement->save();
 
+        // Redirecten naar de juiste pagina of weergave met een succesbericht
+        $user = Auth::user();
         $advertisements = $user->advertisements;
-        
         return view('dashboard.index', compact('user', 'advertisements'));
-    }
-
-    
+        }   
 }
