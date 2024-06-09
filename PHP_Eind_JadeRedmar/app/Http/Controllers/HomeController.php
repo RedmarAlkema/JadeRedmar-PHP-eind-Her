@@ -15,7 +15,7 @@ class HomeController extends Controller
         $user = Auth::user();
         $query = Advertisement::query();       
 
-        if(Auth::user()->role == 'particulier'){
+        if($user->role == 'particulier' || $user->role == 'zakelijk'){
             $advertisements = $user->advertisements;
 
            
