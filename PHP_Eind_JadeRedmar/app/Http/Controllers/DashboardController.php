@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $latestContract = Contract::where('user_id', $user->id)->latest()->first(); // Fetch the latest contract for the user
+        $latestContract = Contract::where('user_id', $user->id)->latest()->first();
 
         return view('dashboard.index', compact('user', 'latestContract'));
     }

@@ -22,22 +22,22 @@ class AdvertisementController extends Controller
     public function store(Request $request)
     {
         // Controleren op maximaal aantal biedingen
-        $userBidsCount = Auth::user()->bids()->count();
-        if ($userBidsCount >= 4) {
-            return back()->with('error', 'Je mag maar maximaal 4 biedingen aanmaken.');
-        }
+        // $userBidsCount = Auth::user()->bids()->count();
+        // if ($userBidsCount >= 4) {
+        //     return back()->with('error', 'Je mag maar maximaal 4 biedingen aanmaken.');
+        // }
 
         // Controleren op maximaal aantal advertenties
-        $userAdsCount = Auth::user()->advertisements()->count();
-        if ($userAdsCount >= 4) {
-            return back()->with('error', 'Je mag maar maximaal 4 advertenties aanmaken.');
-        }
+        // $userAdsCount = Auth::user()->advertisements()->count();
+        // if ($userAdsCount >= 4) {
+        //     return back()->with('error', 'Je mag maar maximaal 4 advertenties aanmaken.');
+        // }
 
-        // Controleren op maximaal aantal verhuur advertenties
-        $userRentalAdsCount = Auth::user()->advertisements()->where('type', 'verhuur')->count();
-        if ($request->type === 'verhuur' && $userRentalAdsCount >= 4) {
-            return back()->with('error', 'Je mag maar maximaal 4 verhuur advertenties aanmaken.');
-        }
+        // // Controleren op maximaal aantal verhuur advertenties
+        // $userRentalAdsCount = Auth::user()->advertisements()->where('type', 'verhuur')->count();
+        // if ($request->type === 'verhuur' && $userRentalAdsCount >= 4) {
+        //     return back()->with('error', 'Je mag maar maximaal 4 verhuur advertenties aanmaken.');
+        // }
 
         // Validatie van de overige velden en opslaan van de advertentiegegevens
         $request->validate([

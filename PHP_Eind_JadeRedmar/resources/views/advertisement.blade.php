@@ -70,7 +70,6 @@
                                 </div>
                             </div>
                             <div class="ml-8">
-                                <p class="text-gray-800 font-semibold">{{ $review->rating }} stars</p>
                                 <p class="text-gray-600">{{ $review->content }}</p>
                             </div>
                         </div>
